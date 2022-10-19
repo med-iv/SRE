@@ -1,5 +1,10 @@
 # Prometheus
 
+- [Задание](#Задание)
+- [Установка](#Установка)
+- [Использование PromQL](#Использование-PromQL)
+- [Recording rule для сложного запроса](#Recording-rule-для-сложного-запроса)
+
 ## Задание
 
 Задание
@@ -79,3 +84,37 @@ systemctl start prometheus.service
 Мониторим Prometheus
 
 ![](docs/prometheus_start.png)
+
+
+## Использование PromQL
+
+Количество http-запросов, которые получил Prometheus
+```
+prometheus_http_requests_total
+```
+
+![](docs/prometheus_http_requests_total.png)
+
+Количество http-запросов, которые получил Prometheus, по пути "/graph", на которые он ответил с кодом 200
+```
+prometheus_http_requests_total{code="200", handler="/graph"} 
+```
+
+![](docs/prometheus_http_requests_total_200_graph.png)
+
+Cреднее количество http-запросов, которые получил Prometheus за 1 час
+```
+sum(rate(prometheus_http_requests_total[1h]))
+```
+![](docs/query_3.png)
+
+[Хорошее объяснение про rate](https://techannotation.wordpress.com/2021/07/19/irate-vs-rate-whatre-they-telling-you/)
+
+
+Cреднее количество http-запросов по http-кодам, которые получил Prometheus за 1 час
+```
+sum by(code)(rate(prometheus_http_requests_total[1h]))
+```
+![](docs/query_4.png)
+
+## Recording rule для сложного запроса
