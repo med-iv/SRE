@@ -118,3 +118,22 @@ sum by(code)(rate(prometheus_http_requests_total[1h]))
 ![](docs/query_4.png)
 
 ## Recording rule для сложного запроса
+
+Добавим recording rule для последнего запроса в [recording_rules.yml](recording_rules.yml)
+```
+cp recording_rules.yml /etc/recording_rules.yml
+```
+Добавить в конфиг Prometheus `/etc/prometheus/prometheus.yml` путь к файлу c recording rules
+```
+rule_files:
+  - "recording_rules.yml"
+```
+Перезапустим Prometheus
+```
+service prometheus restart
+```
+
+Видим, что правило появилось
+
+![](docs/average_http_codes_per_hour.png)
+![](docs/rules.png)
