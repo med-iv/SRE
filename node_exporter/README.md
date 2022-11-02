@@ -3,6 +3,7 @@
 - [Задание](#Задание)
 - [Установка](#Установка)
 - [Отключение неиспользуемых коллекторов](#Отключение-неиспользуемых-коллекторов)
+- [Cкрипт для Textfile-collector](#Cкрипт-для-Textfile-collector)
 
 ## Задание
 1. Установить Node Exporter и добавить его в Prometheus
@@ -93,5 +94,34 @@ systemctl restart prometheus.service
 --collector.meminfo \
 --collector.netstat \
 --collector.sockstat \
---collector.time 
+--collector.time \
+--collector.textfile
 ```
+
+## Cкрипт для Textfile-collector
+
+Добавим скрипт [db_size.sh](db_size.sh) для проверки размера базы oncall в MySQL, чтобы знать не слишком ли большой стала база, и нужно ли добавить еще дисков
+Сделаем его исполняемым
+```
+chmod a+x db_size.sh
+```
+Переместим скрипт [db_size.sh](db_size.sh) в /usr/local/sbin
+```
+mv db_size.sh /usr/local/sbin/
+```
+Запустим cron-jobу c интервалом в 1 минуту
+```
+crontab -e
+```
+Добавим 
+```
+*/1 * * * * /usr/local/sbin/db_size.sh
+```
+Перезапустим Node Exporter
+```
+systemctl daemon-reload 
+systemctl restart node_exporter.service
+```
+
+В Prometheus появилась наша метрика
+![](docs/oncall_db_size.png)
