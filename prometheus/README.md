@@ -34,7 +34,8 @@ mkdir /var/lib/prometheus
 ```
 Скопируем файлы консоли
 ```
-cp -r /tmp/prometheus-2.37.0.linux-amd64/consoles /etc/prometheus cp -r /tmp/prometheus-2.37.0.linux-amd64/console_libraries /etc/prometheus
+cp -r /tmp/prometheus-2.37.0.linux-amd64/consoles /etc/prometheus 
+cp -r /tmp/prometheus-2.37.0.linux-amd64/console_libraries /etc/prometheus
 ```
 Создадим простой файл конфигурации 
 ```
