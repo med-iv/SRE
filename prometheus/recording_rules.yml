@@ -1,0 +1,6 @@
+groups:
+  - name: http_codes
+    interval: 60s
+    rules:
+    - record: average_http_codes_per_hour
+      expr: sum by(code)(rate(prometheus_http_requests_total[1h]))
